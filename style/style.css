@@ -4,12 +4,6 @@
   box-sizing: border-box;
 }
 body {
-  /*   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-  padding: 0; */
   inline-size: 100%;
   block-size: 100vh;
   min-inline-size: 100vw;
@@ -60,6 +54,6 @@ body {
   padding: 10px 0;
   width: 60vw;
 }
-select option:checked{
-  background-color:#CCCCCC;
+select option:checked {
+  background-color: #cccccc;
 }

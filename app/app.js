@@ -27,6 +27,8 @@ btn.addEventListener('click', () => {
       errorMsg('mLife');
     } else if (input.value == '') {
       errorMsg('empty');
+    } else if (input.value < 0) {
+      errorMsg('negative');
     } else {
       checkbtn(save);
     }
@@ -59,7 +61,7 @@ function errorMsg(id) {
     console.log(error.message);
   }
 }; */
-const fetchNum = async () => {
+async function fetchNum() {
   try {
     const url = `http://localhost:5050/fibonacci/${input.value}`;
     const res = await axios.get(url);
@@ -69,7 +71,7 @@ const fetchNum = async () => {
     console.log(error);
     alert(`${error.message}. Please look in a console`);
   }
-};
+}
 
 /* refresh page */
 const refresh = () => {
@@ -142,7 +144,7 @@ function resBlock(data) {
     return b.createdDate - a.createdDate;
   });
 
-  for (let i = 0; i <= 10; i++) {
+  for (let i = 0; i < 10; i++) {
     makeLineRes(arr[i], prevRes[i]);
   }
 }
@@ -162,7 +164,6 @@ function makeLineRes(datearr, res) {
 /* select filter*/
 select.addEventListener('click', () => {
   let lines = document.querySelectorAll('.line');
-  // console.dir(lines);
   switch (select.value) {
     case 'nASC':
       /*       my way:
@@ -220,7 +221,7 @@ select.addEventListener('click', () => {
   }
 });
 
-/* radio check */
+/* save button check */
 function checkbtn(btn) {
   if (btn.checked) {
     resultReload();
@@ -241,13 +242,7 @@ const fib = (n) => {
     return fib(n - 1) + fib(n - 2);
   }
 };
-/* const fibNegat = (n) => {
-  if (n == -1){
-    return 1;
-}else {
-  return fibNegat(n + 2) - fibNegat(n + 1);
-}
-}; */
+
 const memo = (x) => {
   const cache = {};
   return (arg) => cache[arg] || (cache[arg] = x(arg));
