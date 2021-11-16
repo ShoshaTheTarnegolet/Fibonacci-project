@@ -1,7 +1,12 @@
 # Fibonacci project
 
-My second project for frontend course. It's Fibonacci calculator that also work with the server. Design isn't mine, it was on assignment at Figma, it's a simple bootstrap design.
-I've made a Fibonacci function with recursion also learnt handling errors and axios and how to make a sorting.
+My second project for frontend course. It's Fibonacci calculator that also work with the express server. Design isn't mine, it was on assignment at Figma, it's a simple bootstrap design.
+Here you can find:
+
+1. my Fibonacci function with recursion;
+2. sorting function;
+3. handling errors and promises whith axios;
+4. loader, Date, memo function;
 
 # to run Fibonacci server:
 

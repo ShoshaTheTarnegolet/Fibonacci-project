@@ -48,19 +48,6 @@ function errorMsg(id) {
   input.style.borderColor = '#D9534F';
 }
 
-/* fetch */
-/* const fetchNum = async function callserver() {
-  try {
-    const url = `http://localhost:5050/fibonacci/${input.value}`;
-    const res = await fetch(url);
-    const data = await res.json();
-    addRes(data.result);
-    fetchRes();
-  } catch (error) {
-    error.message;
-    console.log(error.message);
-  }
-}; */
 async function fetchNum() {
   try {
     const url = `http://localhost:5050/fibonacci/${input.value}`;
@@ -109,22 +96,6 @@ const addRes = (f) => {
   block.append(resP);
 };
 
-/* second fetch */
-/* async function fetchRes() {
-  try {
-    const url = `http://localhost:5050/getFibonacciResults`;
-    const res = await fetch(url);
-    const data = await res.json();
-    setTimeout(() => {
-      resBlock(data);
-      spinnerTwo.hidden = true;
-    }, 300);
-  } catch (error) {
-    error.message;
-    console.log(error.message);
-  }
-}
- */
 async function fetchRes() {
   try {
     const url = `http://localhost:5050/getFibonacciResults`;
@@ -166,18 +137,6 @@ select.addEventListener('click', () => {
   let lines = document.querySelectorAll('.line');
   switch (select.value) {
     case 'nASC':
-      /*       my way:
-  let arrnASC = [...lines].sort(function (a, b) {
-          return a.dataset.filter - b.dataset.filter;
-        });
-        resultReload();
-        console.log(arrnASC, arrnASC[10].innerText);
-    for (let i = 0; i < 11; i++) {
-          results.append(arrnASC[i]);
-          console.log(arrnASC[i]);
-        } */
-
-      /*easier way, I've found */
       resultReload();
       Array.from(lines)
         .sort((a, b) => {
