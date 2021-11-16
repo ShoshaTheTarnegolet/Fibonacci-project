@@ -1,6 +1,7 @@
 # Fibonacci project
 
 My second project for frontend course. It's Fibonacci calculator that also work with the express server. Design isn't mine, it was on assignment at Figma, it's a simple bootstrap design.
+
 Here you can find:
 
 1. my Fibonacci function with recursion;
