@@ -1,3 +1,6 @@
+
+const ref = firebase.database().ref('num');
+
 const btn = document.getElementById('button');
 const input = document.getElementById('input');
 const block = document.getElementById('input-wrapper');
@@ -8,9 +11,10 @@ const errorMessage = document.querySelectorAll('.invalid-tooltip');
 const save = document.getElementById('saving');
 const select = document.getElementById('filter');
 spinner.hidden = true;
-spinnerTwo.hidden = false;
+spinnerTwo.hidden = true;
 
-fetchRes();
+/* get data when loading pagw*/
+getData(ref);
 
 /* button event */
 btn.addEventListener('click', () => {
@@ -46,18 +50,6 @@ function errorMsg(id) {
 
   input.style.color = '#D9534F';
   input.style.borderColor = '#D9534F';
-}
-
-async function fetchNum() {
-  try {
-    const url = `http://localhost:5050/fibonacci/${input.value}`;
-    const res = await axios.get(url);
-    addRes(res.data.result);
-    fetchRes();
-  } catch (error) {
-    console.log(error);
-    alert(`${error.message}. Please look in a console`);
-  }
 }
 
 /* refresh page */
@@ -96,38 +88,14 @@ const addRes = (f) => {
   block.append(resP);
 };
 
-async function fetchRes() {
-  try {
-    const url = `http://localhost:5050/getFibonacciResults`;
-    const res = await axios.get(url);
-    resBlock(res.data);
-    spinnerTwo.hidden = true;
-  } catch (error) {
-    console.log(error);
-    alert(`${error.message}. Please look in a console`);
-  }
-}
-
-/* prev. results block*/
-function resBlock(data) {
-  const prevRes = data.results;
-  let arr = prevRes.sort(function (a, b) {
-    return b.createdDate - a.createdDate;
-  });
-
-  for (let i = 0; i < 10; i++) {
-    makeLineRes(arr[i], prevRes[i]);
-  }
-}
-
 /* make result divs for result block */
-function makeLineRes(datearr, res) {
+function makeLineRes(data) {
   const line = document.createElement('div');
-  let date = datearr.createdDate;
+  let date = data.date;
   let newDate = new Date(date);
-  line.innerText = `The Fibonnaci Of ${res.number} is ${res.result}. Calculated at: ${newDate}`;
+  line.innerText = `The Fibonnaci Of ${data.value} is ${data.result}. Calculated at: ${newDate}`;
   line.className = 'line';
-  line.setAttribute('data-filter', res.number);
+  line.setAttribute('data-filter', data.value);
   line.setAttribute('data-date', date);
   results.append(line);
 }
@@ -135,6 +103,7 @@ function makeLineRes(datearr, res) {
 /* select filter*/
 select.addEventListener('click', () => {
   let lines = document.querySelectorAll('.line');
+
   switch (select.value) {
     case 'nASC':
       resultReload();
@@ -182,15 +151,52 @@ select.addEventListener('click', () => {
 
 /* save button check */
 function checkbtn(btn) {
+  const val = input.value;
+  let res = fibN(val);
+  addRes(res);
   if (btn.checked) {
-    resultReload();
-    fetchNum();
     spinnerTwo.hidden = false;
-  } else {
-    const val = input.value;
-    let res = fibN(val);
-    addRes(res);
+    /* send data to database*/
+    const data = {
+      value: input.value,
+      result: res,
+      date: Date.now(),
+    };
+    ref
+      .push(data)
+      .then(function () {
+        console.log('Message sent');
+      })
+      .catch(function (error) {
+        console.log('Message could not be sent: ', error);
+      });
+
+    resultReload();
+    setTimeout(() => {
+      getData(ref);
+      spinnerTwo.hidden = true;
+    }, [1000]);
   }
+}
+/* get data from firebase */
+function getData(database) {
+  database.limitToLast(10).on('value', function (snapshot) {
+    snapshot.forEach(function (childSnapshot) {
+      let data = childSnapshot.val();
+      makeLineRes(data);
+      resBlock();
+    });
+  });
+}
+/* function for desc sorting */
+function resBlock() {
+  let lines = document.querySelectorAll('.line');
+  let arr = Array.from(lines).sort((a, b) => {
+    return b.dataset.date - a.dataset.date;
+  });
+  arr.forEach((el) => {
+    results.append(el);
+  });
 }
 
 /* my Fibonacci function */
