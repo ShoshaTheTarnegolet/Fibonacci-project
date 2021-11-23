@@ -1,4 +1,3 @@
-
 const ref = firebase.database().ref('num');
 
 const btn = document.getElementById('button');
@@ -92,7 +91,7 @@ const addRes = (f) => {
 function makeLineRes(data) {
   const line = document.createElement('div');
   let date = data.date;
-  let newDate = new Date(date);
+  let newDate = new Date(date).toUTCString();
   line.innerText = `The Fibonnaci Of ${data.value} is ${data.result}. Calculated at: ${newDate}`;
   line.className = 'line';
   line.setAttribute('data-filter', data.value);
