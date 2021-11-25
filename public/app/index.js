@@ -8,21 +8,22 @@ const spinnerTwo = document.querySelector('.second');
 const results = document.querySelector('.results');
 const errorMessage = document.querySelectorAll('.invalid-tooltip');
 const save = document.getElementById('saving');
-const select = document.getElementById('filter');
+// const select = document.getElementById('filter');
 spinner.hidden = true;
 spinnerTwo.hidden = true;
 
-/* get data when loading pagw*/
+/* get data when loading page*/
 getData(ref);
 
 /* button event */
 btn.addEventListener('click', () => {
+  /* spinner */
   if (spinner.hidden) {
     spinner.hidden = false;
   } else {
     spinner.hidden = true;
   }
-
+  /* error message */
   setTimeout(() => {
     if (input.value > 50) {
       errorMsg('fifty');
@@ -37,7 +38,7 @@ btn.addEventListener('click', () => {
     }
     spinner.hidden = true;
   }, 2000);
-
+  /* refreshing result and remove errorMsg */
   refresh();
   errorReload(errorMessage);
 });
@@ -99,84 +100,6 @@ function makeLineRes(data) {
   results.append(line);
 }
 
-/* select filter*/
-select.addEventListener('click', () => {
-  let lines = document.querySelectorAll('.line');
-
-  switch (select.value) {
-    case 'nASC':
-      resultReload();
-      Array.from(lines)
-        .sort((a, b) => {
-          return a.dataset.filter - b.dataset.filter;
-        })
-        .forEach((el) => {
-          results.append(el);
-        });
-
-      break;
-    case 'nDSC':
-      resultReload();
-      Array.from(lines)
-        .sort((a, b) => {
-          return b.dataset.filter - a.dataset.filter;
-        })
-        .forEach((el) => {
-          results.append(el);
-        });
-      break;
-    case 'dASC':
-      resultReload();
-      Array.from(lines)
-        .sort((a, b) => {
-          return a.dataset.date - b.dataset.date;
-        })
-        .forEach((el) => {
-          results.append(el);
-        });
-      break;
-    case 'dDSC':
-      resultReload();
-      Array.from(lines)
-        .sort((a, b) => {
-          return b.dataset.date - a.dataset.date;
-        })
-        .forEach((el) => {
-          results.append(el);
-        });
-      break;
-  }
-});
-
-/* save button check */
-function checkbtn(btn) {
-  const val = input.value;
-  let res = fibN(val);
-  addRes(res);
-  if (btn.checked) {
-    spinnerTwo.hidden = false;
-    /* send data to database*/
-    const data = {
-      value: input.value,
-      result: res,
-      date: Date.now(),
-    };
-    ref
-      .push(data)
-      .then(function () {
-        console.log('Message sent');
-      })
-      .catch(function (error) {
-        console.log('Message could not be sent: ', error);
-      });
-
-    resultReload();
-    setTimeout(() => {
-      getData(ref);
-      spinnerTwo.hidden = true;
-    }, [1000]);
-  }
-}
 /* get data from firebase */
 function getData(database) {
   database.limitToLast(10).on('value', function (snapshot) {
@@ -187,7 +110,8 @@ function getData(database) {
     });
   });
 }
-/* function for desc sorting */
+
+/* function for desc view */
 function resBlock() {
   let lines = document.querySelectorAll('.line');
   let arr = Array.from(lines).sort((a, b) => {
@@ -197,18 +121,3 @@ function resBlock() {
     results.append(el);
   });
 }
-
-/* my Fibonacci function */
-const fib = (n) => {
-  if (n <= 1) {
-    return n;
-  } else {
-    return fib(n - 1) + fib(n - 2);
-  }
-};
-
-const memo = (x) => {
-  const cache = {};
-  return (arg) => cache[arg] || (cache[arg] = x(arg));
-};
-const fibN = memo(fib);
