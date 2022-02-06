@@ -3,11 +3,19 @@
 ::before {
   box-sizing: border-box;
 }
-body {
-  inline-size: 100%;
-  block-size: 100vh;
-  min-inline-size: 100vw;
+
+html {
+  scroll-behavior: smooth;
+  block-size: 100%;
 }
+body {
+  margin: 0;
+  padding: 0;
+  inline-size: 100%;
+  position: relative;
+  font: 400 1rem/1.5 'Bitter', serif;
+}
+
 .form-label {
   margin: 0;
 }
@@ -56,4 +64,50 @@ body {
 }
 select option:checked {
   background-color: #cccccc;
+}
+/* header */
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.copyright {
+  flex-basis: 100%;
+  text-align: center;
+  color: #1d3557;
+  border-bottom: 1px solid #1d3557;
+}
+.copyright a {
+  text-decoration: none;
+  position: relative;
+  color: #457b9d;
+  overflow: hidden;
+}
+.copyright a:hover {
+  color: #e63946;
+  transition: all 0.6s ease-in-out;
+}
+.copyright a::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  right: 0;
+  width: 0;
+  bottom: -5px;
+  background: #e63946;
+  height: 4px;
+  transition: all 0.6s ease-in-out;
+}
+.copyright a:hover:after,
+.copyright a:focus:after,
+.copyright a:active:after {
+  left: 0;
+  right: auto;
+  width: 100%;
+  z-index: 0;
+}
+.copyright p {
+  font-weight: bold;
+  margin: 1% 0;
 }
